@@ -40,7 +40,11 @@ const calcularEnvio = (total) => {
   }
 };
 
-// 3. Resumen de la compra
+// 3. Total a pagar. Función flecha con retorno implícito: sin llaves ni return, devuelve directamente la suma.
+
+const calcularTotalFinal = (subtotal, envio) => subtotal + envio;
+
+// 4. Resumen de la compra
 
 function mostrarResumen(carrito, total, envio) {
   // Variable local, solo dentro de esta función.
@@ -67,11 +71,11 @@ function mostrarResumen(carrito, total, envio) {
       textoEnvio +
       "\n" +
       "Total a pagar: $" +
-      (total + envio),
+      calcularTotalFinal(total, envio),
   );
 }
 
-// 4. Menú
+// 5. Menú
 
 function armarMenu(nombres, precios) {
   let menu =
@@ -138,7 +142,7 @@ do {
       continue;
     }
 
-    // Acá el pop saca la última pieza del carrito y la guarda en piezaEliminada
+    // Acá el pop saca la última pieza del carrito y la guarda en piezaEliminada.
     const piezaEliminada = carrito.pop();
     // Acá indexOf busca en qué posición del catálogo está esa pieza, para saber cuánto restar.
     const posicionEliminada = nombresPiezas.indexOf(piezaEliminada);
@@ -148,7 +152,7 @@ do {
     continue;
   }
 
-  // El -1 es para corregir la posición del array y que coincida con el índice
+  // El -1 es para corregir la posición del array y que coincida con el índice.
   const posicion = parseInt(seleccion) - 1;
 
   // Acá puse que si la posición no existe en el catálogo (es negativa, se pasa del total de piezas o no es un número), la opción es inválida.
