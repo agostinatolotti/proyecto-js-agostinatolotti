@@ -16,12 +16,13 @@ Está publicado en GitHub Pages. También se puede abrir el archivo "index.html"
 2. Escribe "continuar" para terminar la compra.
 3. Ve el resumen con la cantidad de piezas, el envío y el total. Superando $1.000.000 el envío es gratis.
 
-## Decisiones de la Pre-entrega 3
+## Decisiones de la Pre-entrega 4
 
-- Separé la lógica en tres funciones, siguiendo el esquema entrada, proceso y salida: "pedirSeleccion" muestra el menú y devuelve la respuesta en minúsculas, `calcularEnvio` (función flecha) devuelve el costo del envío, y `mostrarResumen` muestra el total final.
-- Guardé el texto del menú en la constante `textoMenu` y se lo paso a `pedirSeleccion` como parámetro.
-- Sumé `break` para salir del bucle al escribir "continuar", y `continue` para volver al menú sin sumar nada cuando la opción no existe, como me sugirió el profe en la devolución anterior.
-- Si el usuario aprieta "Cancelar" con piezas en el carrito, le pregunto con un `confirm` si está seguro. Si confirma, se vacía el carrito; si no, vuelve al menú con lo que tenía.
+- Pasé las piezas a dos arrays, `nombresPiezas` y `preciosPiezas`, donde la misma posición corresponde a la misma pieza. Sumé un dije para llegar a 5 piezas.
+- El menú se arma solo con la función `armarMenu`, que recorre el catálogo con `for...of`. Si agrego una pieza a los arrays, aparece en el menú sin tocar nada más.
+- El `switch` se reemplazó por la posición en el array: si el usuario escribe "3", busco la posición 2.
+- El carrito pasó a ser un array: `push` agrega piezas, `pop` saca la última con la nueva opción "deshacer", `indexOf` encuentra su precio para restarlo, e `includes` avisa si ya había una igual.
+- El resumen final lista las piezas del carrito con `for...of`.
 
 ## Tecnologías
 
@@ -39,5 +40,6 @@ Creación del repositorio: 29/10/2026.
 | Pre-entrega 1 | Primeros pasos con JavaScript: calculadora de IMC                          | 29/10/2026 |
 | Pre-entrega 2 | Lógica de programación y control de flujo: simulador de compra de Obelisca | 16/11/2026 |
 | Pre-entrega 3 | Funciones e integración de lógica: simulador organizado en funciones       | 16/11/2026 |
+| Pre-entrega 4 | Uso e interacción con Arrays: catálogo y carrito como arrays               | 17/11/2026 |
 
 Autora: Agostina Tolotti.

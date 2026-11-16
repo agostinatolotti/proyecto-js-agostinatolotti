@@ -1,41 +1,18 @@
 // Constantes
 
-const nombrePulsera1 = "Pulsera N°1 - Colección Permanente";
-const precioPulsera1 = 200000;
-const nombreAnillo1 = "Anillo N°1 - Colección Permanente";
-const precioAnillo1 = 150000;
-const nombreCollar1 = "Collar N°1 - Colección Permanente";
-const precioCollar1 = 300000;
-const nombreAros1 = "Aros N°1 - Colección Permanente";
-const precioAros1 = 100000;
+const nombresPiezas = [
+  "Pulsera N°1 - Colección Permanente",
+  "Anillo N°1 - Colección Permanente",
+  "Collar N°1 - Colección Permanente",
+  "Aros N°1 - Colección Permanente",
+  "Dije N°1 - Colección Permanente",
+];
+
+const preciosPiezas = [200000, 150000, 300000, 100000, 80000];
 
 const montoMinimoEnvioGratis = 1000000;
 
 const costoEnvio = 9999;
-
-const textoMenu =
-  "Escribí el número de la pieza que querés agregar a tu compra y clickeá en aceptar. Podés agregarlas múltiples veces.\n" +
-  "1. " +
-  nombrePulsera1 +
-  " - $" +
-  precioPulsera1 +
-  "\n" +
-  "2. " +
-  nombreAnillo1 +
-  " - $" +
-  precioAnillo1 +
-  "\n" +
-  "3. " +
-  nombreCollar1 +
-  " - $" +
-  precioCollar1 +
-  "\n" +
-  "4. " +
-  nombreAros1 +
-  " - $" +
-  precioAros1 +
-  "\n" +
-  "Cuando hayas agregado los productos escribí 'continuar'";
 
 // Funciones
 
@@ -65,7 +42,7 @@ const calcularEnvio = (total) => {
 
 // 3. Resumen de la compra
 
-function mostrarResumen(cantidad, total, envio) {
+function mostrarResumen(carrito, total, envio) {
   // Variable local, solo dentro de esta función.
   let textoEnvio = "gratis";
 
@@ -73,9 +50,18 @@ function mostrarResumen(cantidad, total, envio) {
     textoEnvio = "$" + envio;
   }
 
+  let listaPiezas = "";
+
+  for (const pieza of carrito) {
+    listaPiezas = listaPiezas + "- " + pieza + "\n";
+  }
+
   alert(
-    "Llevás " +
-      cantidad +
+    "Tu compra:\n" +
+      listaPiezas +
+      "\n" +
+      "Llevás " +
+      carrito.length +
       " piezas.\n" +
       "Envío: " +
       textoEnvio +
@@ -85,9 +71,30 @@ function mostrarResumen(cantidad, total, envio) {
   );
 }
 
+// 4. Menú
+
+function armarMenu(nombres, precios) {
+  let menu =
+    "Escribí el número de la pieza que querés agregar a tu compra y clickeá en aceptar. Podés agregarlas múltiples veces.\n";
+  let numero = 1;
+
+  for (const nombre of nombres) {
+    menu = menu + numero + ". " + nombre + " - $" + precios[numero - 1] + "\n";
+    numero = numero + 1;
+  }
+
+  menu =
+    menu + "Escribí 'deshacer' para sacar la última pieza que agregaste.\n";
+  menu = menu + "Cuando hayas terminado, escribí 'continuar'.";
+
+  return menu;
+}
+
+const textoMenu = armarMenu(nombresPiezas, preciosPiezas);
+
 // Variables
 
-let cantidad = 0;
+let carrito = [];
 let total = 0;
 let seleccion = "";
 let compraCancelada = false;
@@ -104,19 +111,20 @@ do {
   }
 
   if (seleccion === "cancelar") {
-    if (cantidad === 0) {
+    if (carrito.length === 0) {
       break;
     }
 
     const confirmaCancelacion = confirm(
       "Tenés " +
-        cantidad +
+        carrito.length +
         " piezas en tu carrito. ¿Seguro que querés cancelar tu compra?",
     );
 
     if (confirmaCancelacion) {
       compraCancelada = true;
-      cantidad = 0;
+      // Acá directamente vacío el carrito
+      carrito = [];
       total = 0;
       break;
     }
@@ -124,52 +132,63 @@ do {
     continue;
   }
 
-  let nombreElegido = "";
-  let precioElegido = 0;
+  if (seleccion === "deshacer") {
+    if (carrito.length === 0) {
+      alert("Tu carrito está vacío, no hay nada para deshacer.");
+      continue;
+    }
 
-  switch (seleccion) {
-    case "1":
-      nombreElegido = nombrePulsera1;
-      precioElegido = precioPulsera1;
-      break;
-    case "2":
-      nombreElegido = nombreAnillo1;
-      precioElegido = precioAnillo1;
-      break;
-    case "3":
-      nombreElegido = nombreCollar1;
-      precioElegido = precioCollar1;
-      break;
-    case "4":
-      nombreElegido = nombreAros1;
-      precioElegido = precioAros1;
-      break;
-  }
+    // Acá el pop saca la última pieza del carrito y la guarda en piezaEliminada
+    const piezaEliminada = carrito.pop();
+    // Acá indexOf busca en qué posición del catálogo está esa pieza, para saber cuánto restar.
+    const posicionEliminada = nombresPiezas.indexOf(piezaEliminada);
+    total = total - preciosPiezas[posicionEliminada];
 
-  if (precioElegido === 0) {
-    alert('Opción inválida. Escribí un número del 1 al 4 o "continuar".');
+    alert("Se ha eliminado: " + piezaEliminada);
     continue;
   }
 
-  total = total + precioElegido;
-  cantidad = cantidad + 1;
-  alert("Agregaste: " + nombreElegido);
+  // El -1 es para corregir la posición del array y que coincida con el índice
+  const posicion = parseInt(seleccion) - 1;
+
+  // Acá puse que si la posición no existe en el catálogo (es negativa, se pasa del total de piezas o no es un número), la opción es inválida.
+  if (!(posicion >= 0 && posicion < nombresPiezas.length)) {
+    alert(
+      "Opción inválida. Escribí un número del 1 al " +
+        nombresPiezas.length +
+        ', "deshacer" o "continuar".',
+    );
+    continue;
+  }
+
+  const nombreElegido = nombresPiezas[posicion];
+
+  // Acá includes revisa si la pieza ya estaba en el carrito para cambiar el mensaje.
+  if (carrito.includes(nombreElegido)) {
+    alert("Agregaste otra unidad de: " + nombreElegido);
+  } else {
+    alert("Agregaste: " + nombreElegido);
+  }
+
+  // Acá push agrega esa pieza al final del array del carrito.
+  carrito.push(nombreElegido);
+  total = total + preciosPiezas[posicion];
 } while (seleccion !== "continuar");
 
 // Cierre del simulador
 
 if (compraCancelada) {
   alert("Cancelaste tu compra. ¡Te esperamos pronto!");
-} else if (cantidad === 0) {
+} else if (carrito.length === 0) {
   alert("Tu carrito está vacío. ¡Te esperamos pronto!");
 } else {
   const envio = calcularEnvio(total);
-  mostrarResumen(cantidad, total, envio);
+  mostrarResumen(carrito, total, envio);
 
   // Registro interno
   console.log(
     "Compra finalizada. Piezas: " +
-      cantidad +
+      carrito.length +
       " | Subtotal: $" +
       total +
       " | Envío: $" +
