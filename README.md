@@ -16,13 +16,12 @@ Está publicado en GitHub Pages. También se puede abrir el archivo "index.html"
 2. Escribe "continuar" para terminar la compra.
 3. Ve el resumen con la cantidad de piezas, el envío y el total. Superando $1.000.000 el envío es gratis.
 
-## Decisiones de la Pre-entrega 2
+## Decisiones de la Pre-entrega 3
 
-- A partir de esta entrega el proyecto pasa a ser el simulador e-commerce de Obelisca.
-- Usé `do...while` porque el menú tiene que aparecer al menos una vez antes de saber si el usuario quiere terminar.
-- El menú se resuelve con un `switch`, y el envío con `if`, `else if` y `else`, que también tiene en cuenta la opción del carrito vacío.
-- Si el usuario aprieta "Cancelar", el prompt devuelve `null`. Lo tomo como que terminó su compra, para que el programa no se rompa al pasar la respuesta a minúsculas.
-- Por ahora cada pieza es una constante. En las próximas entregas evolucionará por supuesto.
+- Separé la lógica en tres funciones, siguiendo el esquema entrada, proceso y salida: "pedirSeleccion" muestra el menú y devuelve la respuesta en minúsculas, `calcularEnvio` (función flecha) devuelve el costo del envío, y `mostrarResumen` muestra el total final.
+- Guardé el texto del menú en la constante `textoMenu` y se lo paso a `pedirSeleccion` como parámetro.
+- Sumé `break` para salir del bucle al escribir "continuar", y `continue` para volver al menú sin sumar nada cuando la opción no existe, como me sugirió el profe en la devolución anterior.
+- Si el usuario aprieta "Cancelar" con piezas en el carrito, le pregunto con un `confirm` si está seguro. Si confirma, se vacía el carrito; si no, vuelve al menú con lo que tenía.
 
 ## Tecnologías
 
@@ -32,11 +31,13 @@ Está publicado en GitHub Pages. También se puede abrir el archivo "index.html"
 ## Cronología
 
 Creación de la marca Obelisca: 15/05/2026.
+
 Creación del repositorio: 29/10/2026.
 
 | Entrega       | Tema                                                                       | Fecha      |
 | ------------- | -------------------------------------------------------------------------- | ---------- |
 | Pre-entrega 1 | Primeros pasos con JavaScript: calculadora de IMC                          | 29/10/2026 |
 | Pre-entrega 2 | Lógica de programación y control de flujo: simulador de compra de Obelisca | 16/11/2026 |
+| Pre-entrega 3 | Funciones e integración de lógica: simulador organizado en funciones       | 16/11/2026 |
 
 Autora: Agostina Tolotti.
